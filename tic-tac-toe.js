@@ -1,6 +1,14 @@
 
 var grid;
-window.onload=function boardlayout(){
+var statusbox;
+
+window.onload=function Startgame(){
+    boardlayout();
+    let newgame=document.getElementsByClassName('btn')[0];
+    newgame.addEventListener('click',restart);
+}
+
+function boardlayout(){
     grid= document.querySelectorAll('#board div');
     for(let x=0;x<grid.length;x++){
         grid[x].classList.add('square');
@@ -19,9 +27,6 @@ function playturn(e){
     checkWin();
     switchturn();
     setStatus();
-    console.log("Square clicked ");
-    console.log(gamewin);
-    console.log(xmoves,omoves);
 }
 function addMark(cell,xturn){
     if (xturn){
@@ -52,14 +57,13 @@ function setHover(cell){
 }
 }
 function setStatus(){
-    let statusbox=document.querySelector('#status');
+    statusbox=document.querySelector('#status');
     if (gamewin) {
-        let statusbox=document.querySelector('#status');
         statusbox.classList.add('you-won');
         if (!xturn){
-            statusbox.innerHTML="Congratulations! X is the Winner!";
+            statusbox.innerHTML="Congratulations!X is the Winner!";
         }else{
-            statusbox.textContent="Congratulations! O is the Winner!"; 
+            statusbox.textContent="Congratulations!O is the Winner!"; 
         }
         for(let x=0;x<grid.length;x++){
             grid[x].removeEventListener('click',playturn);
@@ -98,7 +102,14 @@ function checkWin(){
         }
     }     
 }
-
-
-
-
+function restart(e){
+    xmoves=[];
+    omoves=[];
+    gamewin=false;
+    statusbox.textContent=("Move your mouse over a square and click to play an X or an O.");
+    statusbox.classList.remove('you-won');
+    for(let x=0;x<grid.length;x++){
+        grid[x].textContent=null;
+        grid[x].addEventListener('click',playturn,{once: true});
+    }
+}
